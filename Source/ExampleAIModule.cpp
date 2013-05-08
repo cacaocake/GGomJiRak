@@ -443,28 +443,10 @@ void ExampleAIModule::drawStats()
 		
 	}
   }
+
+
   int line=1;
-	///
-	// 내가 캔 자원
-	Broodwar->drawTextScreen(5,16*line++,"- gathered by me : %d / %d", Broodwar->self()->gatheredMinerals(), Broodwar->self()->gatheredGas());
-	//Broodwar->self()->spentMinerals();
-	// 적 자원 예측
-	Broodwar->drawTextScreen(5,16*line++,"- gathered by enemy : %d / %d", TaehoModule::getInstance()->calculate_enemy_gathered_mineral(), TaehoModule::getInstance()->calculate_enemy_gathered_gas());
-	Broodwar->drawTextScreen(5,16*line++,"- spent by enemy    : %d / %d", TaehoModule::getInstance()->get_enemy_spend_mineral(), TaehoModule::getInstance()->get_enemy_spend_gas());
-
-	// 현재 적유닛 갯수
-	std::map<UnitType, int> enemy_unitTypeCounts = TaehoModule::getInstance()->get_enemy_alive_unit_types();
-	Broodwar->drawTextScreen(5,16*line++,"enemy units:");
-
-  //for(std::map<UnitType,int>::iterator i=unitTypeCounts.begin();i!=unitTypeCounts.end();i++)
- // {
-//    Broodwar->drawTextScreen(5,16*line,"- %d %ss",(*i).second, (*i).first.getName().c_str());
- //   line++;	
-  //}
-  for(std::map<UnitType,int>::iterator i=enemy_unitTypeCounts.begin();i!=enemy_unitTypeCounts.end();i++)
-  {
-    Broodwar->drawTextScreen(5,16*line++,"- %d %ss",(*i).second, (*i).first.getName().c_str());
-  }
+  line = TaehoModule::getInstance()->drawStats(line);
 
   
 }

@@ -32,6 +32,7 @@ public:
 	// event
 	void onUnitShow(BWAPI::Unit* unit);
 	void onUnitDestroy(BWAPI::Unit* unit);
+	int drawStats(int start_line);
 
 	// 미네랄은 전체 미네랄 캔것 - 우리것 으로 계산하기
 
