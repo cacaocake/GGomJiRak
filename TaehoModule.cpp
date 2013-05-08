@@ -209,6 +209,11 @@ int line=start_line;
 	Broodwar->drawTextScreen(5,16*line++,"- gathered by enemy : %d / %d", TaehoModule::getInstance()->calculate_enemy_gathered_mineral(), TaehoModule::getInstance()->calculate_enemy_gathered_gas());
 	Broodwar->drawTextScreen(5,16*line++,"- spent by enemy    : %d / %d", TaehoModule::getInstance()->get_enemy_spend_mineral(), TaehoModule::getInstance()->get_enemy_spend_gas());
 
+	// 점수 계산
+	Broodwar->drawTextScreen(5,16*line++,"- my attack score : %lf", TaehoModule::getInstance()->analysis_my_attack_score());
+	Broodwar->drawTextScreen(5,16*line++,"- enemy defense score : %lf", TaehoModule::getInstance()->analysis_enemy_defense_score());
+
+
 	// 현재 적유닛 갯수
 	std::map<UnitType, int> enemy_unitTypeCounts = TaehoModule::getInstance()->get_enemy_alive_unit_types();
 	Broodwar->drawTextScreen(5,16*line++,"enemy units:");
@@ -217,6 +222,9 @@ int line=start_line;
   {
     Broodwar->drawTextScreen(5,16*line++,"- %d %ss",(*i).second, (*i).first.getName().c_str());
   }
+
+  // 저글링 / 질럿의 점수
+  // 우리의 공격점수 / 상대의 방어점수
 
   return line;
 }
@@ -238,4 +246,74 @@ std::map<UnitType, int> TaehoModule::get_enemy_alive_unit_types()
 	  }
   }
   return enemy_unitTypeCounts;
+}
+
+// analysis
+double TaehoModule::analysis_my_attack_score()
+{
+	double score = 0;
+
+	std::map<BWAPI::UnitType, double> score_map;
+	score_map[UnitTypes::Zerg_Zergling] = 3;
+
+	for(std::map<int, BWAPI::Unit*>::const_iterator i=self_alive_units.begin();i!=self_alive_units.end();i++)
+	{
+		BWAPI::UnitType type = (*i).second->getType();
+		
+		if(score_map[type])
+			score += score_map[type];
+	}
+
+	return score;
+}
+double TaehoModule::analysis_my_defense_score()
+{
+	double score = 0;
+
+	std::map<BWAPI::UnitType, double> score_map;
+	score_map[UnitTypes::Zerg_Zergling] = 2;
+
+	for(std::map<int, BWAPI::Unit*>::const_iterator i=self_alive_units.begin();i!=self_alive_units.end();i++)
+	{
+		BWAPI::UnitType type = (*i).second->getType();
+		
+		if(score_map[type])
+			score += score_map[type];
+	}
+
+	return score;
+}
+double TaehoModule::analysis_enemy_attack_score()
+{
+	double score = 0;
+
+	std::map<BWAPI::UnitType, double> score_map;
+	score_map[UnitTypes::Protoss_Zealot] = 9;
+
+	for(std::map<int, BWAPI::UnitType>::const_iterator i=enemy_alive_unit_types.begin();i!=enemy_alive_unit_types.end();i++)
+	{
+		BWAPI::UnitType type = (*i).second;
+		
+		if(score_map[type])
+			score += score_map[type];
+	}
+
+	return score;
+}
+double TaehoModule::analysis_enemy_defense_score()
+{
+	double score = 0;
+
+	std::map<BWAPI::UnitType, double> score_map;
+	score_map[UnitTypes::Protoss_Zealot] = 11;
+
+	for(std::map<int, BWAPI::UnitType>::const_iterator i=enemy_alive_unit_types.begin();i!=enemy_alive_unit_types.end();i++)
+	{
+		BWAPI::UnitType type = (*i).second;
+		
+		if(score_map[type])
+			score += score_map[type];
+	}
+
+	return score;
 }

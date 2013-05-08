@@ -34,6 +34,13 @@ public:
 	void onUnitDestroy(BWAPI::Unit* unit);
 	int drawStats(int start_line);
 
+	// analysis
+	double analysis_my_attack_score();
+	double analysis_my_defense_score();
+	double analysis_enemy_attack_score();
+	double analysis_enemy_defense_score();
+
+
 	// 미네랄은 전체 미네랄 캔것 - 우리것 으로 계산하기
 
 	// getter and setter
