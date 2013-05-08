@@ -77,17 +77,17 @@ void TaehoModule::add_gas_id(int id, Unit* unit)
 }
 void TaehoModule::remove_unit_id(int id)
 {
-	enemy_alive_units[id] = NULL;
-	enemy_alive_unit_types[id] = NULL;
-	self_alive_units[id] = NULL;
+	enemy_alive_units.erase(id);
+	enemy_alive_unit_types.erase(id);
+	self_alive_units.erase(id);
 }
 void TaehoModule::remove_mineral_id(int id)
 {
-	alive_minerals[id] = NULL;
+	alive_minerals.erase(id);
 }
 void TaehoModule::remove_gas_id(int id)
 {
-	alive_gas[id] = NULL;
+	alive_gas.erase(id);
 }
 
 //int calculate_gathered_mineral();
@@ -186,15 +186,15 @@ void TaehoModule::onUnitDestroy(BWAPI::Unit* unit)
 {
   if(unit->getType() == UnitTypes::Resource_Mineral_Field || unit->getType() == UnitTypes::Resource_Mineral_Field_Type_2 || unit->getType() == UnitTypes::Resource_Mineral_Field_Type_3)
   {
-	  TaehoModule::getInstance()->add_mineral_id(unit->getID(), unit);
+	  TaehoModule::getInstance()->remove_mineral_id(unit->getID());
   }
   else if(unit->getType() == UnitTypes::Resource_Vespene_Geyser)
   {
-	  TaehoModule::getInstance()->add_gas_id(unit->getID(), unit);
+	  TaehoModule::getInstance()->remove_gas_id(unit->getID());
   }
   else
   {
-	  TaehoModule::getInstance()->add_unit_id(unit->getID(), unit);
+	  TaehoModule::getInstance()->remove_unit_id(unit->getID());
   }
 }
 
